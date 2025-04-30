@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('projets', function (Blueprint $table) {
             $table->id();
-            $table->string('nom');
+            $table->string('titre');
             $table->string('type_projet');
             $table->string('forme_juridique');
             $table->string('plan_affaires');

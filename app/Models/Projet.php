@@ -6,7 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Projet extends Model
 {
-    
-    protected $fillable = ['nom','description','date_debut','date_fin','budget','etat','id_client','id_chef_projet'];
+
+    protected $fillable = [
+        'titre',
+        'type_projet',
+        'forme_juridique',
+        'etat',
+        'plan_affaires'
+    ];
 
 }

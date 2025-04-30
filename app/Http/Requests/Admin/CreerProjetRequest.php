@@ -22,12 +22,11 @@ class CreerProjetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'type_projet' => 'required|string|max:255',
-            'forme_juridique' => 'required|string|max:255',
-            'plan_affaires' => 'required|string|max:255',
-            'statut' =>'required|string|max:255',
-            'etat' =>'required|string|max:255',
+            'titre' => 'required|string',
+            'type_projet' => 'required|string',
+            'forme_juridique' => 'required|string',
+            'etat' => 'required|string',
+            'plan_affaires' => 'file|mimes:pdf|nullable',
 
         ];
     }
