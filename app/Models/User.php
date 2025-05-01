@@ -19,9 +19,15 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'prenom',
+        'telephone',
         'email',
         'password',
+        'role',
     ];
+    public function promoteur(){
+        return $this->hasMany(Promoteur::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

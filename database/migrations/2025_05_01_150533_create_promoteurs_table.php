@@ -11,32 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('projets', function (Blueprint $table) {
+        Schema::create('promoteurs', function (Blueprint $table) {
             $table->id();
-            $table->string('titre');
-            $table->string('type_projet');
-            $table->string('forme_juridique');
-            $table->string('plan_affaires');
-            $table->string('statut');
-            $table->string('etat');
+            $table->foreignId('utilisateur_id')->constrained('users')->onDelete('cascade');
+            $table->string('date_naissance');
+            $table->string('lieu_naissance');
+            $table->string('numero_cni');
+            $table->string('cni_image');
             $table->timestamps();
         });
-
     }
-
-
-
-
-
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('projets');
+        Schema::dropIfExists('promoteurs');
     }
 };
-
-

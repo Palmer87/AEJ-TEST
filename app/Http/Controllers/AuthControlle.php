@@ -42,13 +42,14 @@ class AuthControlle extends Controller
     $user->email = $request->email;
     $user->password = Hash::make($request->password);
     $user->save();
+    dd($user);
     return back()->with('success','votre compte a ete cree avec success');
   }
   public function logout(){
     Auth::logout();
     return redirect()->route('login');
   }
- 
+
 
 
 }
