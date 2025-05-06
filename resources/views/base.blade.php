@@ -15,7 +15,28 @@
                 <a href="/" class="text-white">Home</a>
             </li>
         </ul>
-       <a href="{{ route('login') }}" class="text-white"><box-icon type='solid' color="white" name='user-circle'></box-icon></a>
+        @if (Auth::check())
+        <ul>
+            <li>
+                <a href="{{ route('promoteur.dashboard') }}" class="text-white">Dashboard</a>
+            </li>
+            <li>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="text-white"><box-icon type='solid' color="white" name='log-out'></box-icon></button>
+                </form>
+            </li>
+        </ul>
+        @else
+        <ul>
+            <li>
+                <a href="{{ route('login') }}" class="text-white"><box-icon type='solid' color="white" name='user-circle'></box-icon></a>
+            </li>
+            <li>
+                <a href="{{ route('register') }}" class="text-white"><box-icon type='solid' color="white" name='user-plus'></box-icon></a>
+            </li>
+        </ul>
+        @endif
     </nav>
     <div>
         @yield('content')

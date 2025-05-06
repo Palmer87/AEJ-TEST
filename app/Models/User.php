@@ -25,9 +25,11 @@ class User extends Authenticatable
         'password',
         'role',
     ];
-    public function promoteur(){
-        return $this->hasMany(Promoteur::class);
+    public function promoteur()
+    {
+        return $this->hasOne(Promoteur::class, 'utilisateur_id');
     }
+
 
     /**
      * The attributes that should be hidden for serialization.

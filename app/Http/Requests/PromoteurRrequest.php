@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreerProjetRequest extends FormRequest
+class PromoteurRrequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,16 @@ class CreerProjetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'titre' => 'required|string',
-            'type_projet' => 'required|string',
-            'forme_juridique' => 'required|string',
-            'etat' => 'required|string',
-            'plan_affaires' => 'file|mimes:pdf|nullable',
-
+        'name' => 'required|max:255|string',
+        'prenoms' => 'required',
+        'email' => 'required|email|unique:users,email|lowercase',
+        'password' => 'required|min:6|alpha_num|confirmed',
+        'date_naissance' => 'required',
+        'lieu_naissance' => 'required',
+        'numero_cni' => 'required',
+        'cni_image' => 'required|image',
         ];
+
+
     }
 }

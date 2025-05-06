@@ -9,18 +9,22 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('projets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('promoteur_id')->constrained('promoteurs')->onDelete('cascade');
+            $table->unsignedBigInteger('promoteur_id');
+            $table->string('titre');
             $table->string('type_projet');
             $table->string('forme_juridique');
-            $table->text('paln_affaire');
-            $table->string('status')->default('en_attente');
+            $table->string('plan_affaires')->nullable();
+            $table->enum('status', ['en attente', 'validé', 'rejeté'])->default('en attente');
             $table->timestamps();
+
+            $table->foreign('promoteur_id')->references('id')->on('promoteurs')->onDelete('cascade');
         });
     }
+
 
     /**
      * Reverse the migrations.

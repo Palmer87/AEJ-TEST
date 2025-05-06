@@ -1,21 +1,33 @@
 <?php
 
-use App\Http\Controllers\Admin\ProjetControler;
-use App\Http\Controllers\Admin\ProjetController;
-use App\Http\Controllers\AuthControlle;
+use App\Http\Controllers\GestionnaireController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\projetController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-    route::prefix('admin')->name('admin.')->group(function () {
-        route::resource('projets', ProjetController::class);
-        });
-    Route::get('/signup',[AuthControlle::class,'showSignUp'])->name('signup');
-    Route::post('/signup',[AuthControlle::class,'signUp'])->name('tosignup');
-    Route::get('/login',[AuthControlle::class,'showforlogin'])->name('login');
-    Route::post('/login',[AuthControlle::class,'login'])->name('tologin');
-    Route::post('/logout',[AuthControlle::class,'logout'])->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+use App\Http\Controllers\PromoteurController;
+
+Route::get('/dashboard/promoteur', [PromoteurController::class, 'dashboard'])
+    ->name('promoteur.dashboard')
+    ->middleware('auth');
+Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])
+    ->name('gestionnaire.dashboard')
+    ->middleware('auth');
 
 
+    Route::middleware(['auth'])->group(function () {
+        Route::resource('projets', projetController::class);
+
+    });
+
+
+require __DIR__.'/auth.php';

@@ -1,29 +1,38 @@
 @extends('base')
-@section('title', 'se connecter')
+@section('title', 'Connexion')
+
 @section('content')
-<div class="container my-4 d-flex justify-content-center">
-    <div class="card shadow rounded" style="max-width: 32rem; width: 100%;">
-      <div class="card-body">
-        <form action="{{ route('tologin') }}" method="POST">
-          @csrf
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" name="email" id="email" class="form-control" required>
-          </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Connexion</h4>
+                </div>
+                <div class="card-body">
+                    @if(session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
 
-          <div class="mb-3">
-            <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" name="password" id="password" class="form-control" required>
-          </div>
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse Email</label>
+                            <input type="email" class="form-control" name="email" id="email" required autofocus>
+                        </div>
 
-          <div class="d-flex justify-content-between align-items-center">
-            <button type="submit" class="btn btn-primary">Se connecter</button>
-          </div>
-        </form>
-      </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" name="password" id="password" required>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-
+</div>
 @endsection
-
