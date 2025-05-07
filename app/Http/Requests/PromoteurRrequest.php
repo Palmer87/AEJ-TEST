@@ -29,7 +29,8 @@ class PromoteurRrequest extends FormRequest
         'date_naissance' => 'required',
         'lieu_naissance' => 'required',
         'numero_cni' => 'required',
-        'cni_image' => 'required|image',
+        'cni_image' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+
         ];
 
 

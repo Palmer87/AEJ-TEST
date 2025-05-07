@@ -43,11 +43,15 @@ class RegisteredUserController extends Controller
         ]);
 
         $promoteur = new Promoteur();
-        $request->utilisateur_id ;
+        $promoteur->utilisateur_id = $user->id;
         $promoteur->date_naissance = $request->date_naissance;
         $promoteur->lieu_naissance = $request->lieu_naissance;
         $promoteur->numero_cni = $request->numero_cni;
-        $promoteur->cni_image = $request->cni_image;
+        if ($request->hasFile('cni_image')) {
+            $promoteur->cni_image = $request->file('cni_image')->store('cni', 'public');
+        }
+
+
         $promoteur->save();
         DB::commit();
 

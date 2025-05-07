@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Auth;
 class projetController extends Controller
 {
 
-    public function index()
-    {
-        return view('admin.projets.index',['projets' => Projet::orderBy('created_at', 'desc')->paginate(15)]);
-    }
-
-
-
     public function create()
     {
         return view('projets.form', ['projet' => new Projet()]);
@@ -57,20 +50,21 @@ class projetController extends Controller
             'status' => 'en attente',
         ]);
 
+
         return redirect()->route('promoteur.dashboard')->with('success', 'Projet soumis avec succès.');
     }
 
 
 
-    public function show(string $id)
+    public function show(Projet $projet)
     {
-        //
+
+        return view('projets.show', ['projet' => $projet]);
     }
 
-    public function edit(string $id)
+    public function edit(Projet $projet)
     {
-        $projet = Projet::findOrFail($id);
-        return view('admin.projets.form', ['projet' => $projet]);
+        return view('projets.form', ['projet' => $projet,]);
     }
 
 
@@ -85,7 +79,7 @@ class projetController extends Controller
 
         $projet->update($data);
 
-        return redirect()->route('admin.projets.index')->with('success', 'Projet mis à jour avec succès');
+        return redirect()->route('promoteur.dashboard')->with('success', 'Projet mis à jour avec succès');
     }
 
 
@@ -95,6 +89,8 @@ class projetController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $projet = Projet::findOrFail($id);
+        $projet->delete();
+        return redirect()->route('promoteur.dashboard')->with('success', 'Projet supprimé avec succès');
     }
 }

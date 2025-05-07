@@ -19,6 +19,7 @@
                             'class' => 'col',
                             'name' => 'titre',
                             'label' => 'Titre',
+                            'value'=>(old('titre', $projet->titre))
 
                         ])
 
@@ -27,9 +28,8 @@
                             <label for="type_projet" class="form-label">Type de projet</label>
                             <select name="type_projet" class="form-control">
                                 <option value="">-- Choisir le type de projet --</option>
-                                <option value="EN DEVELOPPEMENT">EN DEVELOPPEMENT</option>
-                                <option value="EN CREATION">EN CREATION</option>
-                                <!-- Ajoute d'autres options selon tes besoins -->
+                                <option value="EN DEVELOPPEMENT" {{ old('type_projet', $projet->type_projet) == 'EN DEVELOPPEMENT' ? 'selected' : '' }}>EN DEVELOPPEMENT</option>
+                                <option value="EN CREATION" {{ old('type_projet', $projet->type_projet) == 'EN CREATION' ? 'selected' : '' }}>EN CREATION</option>
                             </select>
                         </div>
 
@@ -38,8 +38,8 @@
                             <label for="forme_juridique" class="form-label">Forme juridique</label>
                             <select name="forme_juridique" class="form-control">
                                 <option value="">-- Choisir la forme juridique --</option>
-                                <option value="SARL">SARL</option>
-                                <option value="SAS">SAS</option>
+                                <option value="SARL"{{old('forme_juridique',$projet->forme_juridique='SARL'?'selected':'')}}>SARL</option>
+                                <option value="SAS"{{old('forme_juridique',$projet->forme_juridique='SAS'?'selected':'')}}>SAS</option>
                                 <!-- Autres options -->
                             </select>
                         </div>
@@ -49,17 +49,10 @@
                                 'class' => 'col',
                                 'name' => 'plan_affaires',
                                 'label' => 'Business plan',
-                                'type' => 'file'
+                                'type' => 'file',
+                                'value'=>(old('plan_affaires', $projet->plan_affaires))
                             ])
-                         <div class="row">
-                            <label for="etat" class="form-label">Type de projet</label>
-                            <select name="etat" class="form-control">
-                                <option value="">-- Choisir le type de projet --</option>
-                                <option value="Agricole">Agricole</option>
-                                <option value="Numérique" >Numérique</option>
-                                <!-- Ajoute d'autres options selon tes besoins -->
-                            </select>
-                        </div>
+
                     </div>
 
                     <div class="row">

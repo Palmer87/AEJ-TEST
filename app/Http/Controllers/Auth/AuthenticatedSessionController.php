@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use PhpParser\Node\Stmt\ElseIf_;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -39,7 +40,9 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('promoteur.dashboard');
         } elseif ($user->role === 'gestionnaire') {
             return redirect()->route('dashboard.gestionnaire');
-        } else {
+        } elseif($user->role === 'admin') {
+            return redirect()->route('dashboard.admin');
+        }else {
             return redirect()->route('home')->with('error', 'Rôle non reconnu.');
         }
 
