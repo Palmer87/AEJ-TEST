@@ -18,21 +18,29 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get('/dashboard/promoteur', [PromoteurController::class, 'dashboard'])
-    ->name('promoteur.dashboard')
-    ->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('promoteurs', Admincontroller::class);
+});
+
+
+
+
 
 Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])
     ->name('gestionnaire.dashboard')
     ->middleware('auth');
 
+route::resource('gestionnaires', GestionnaireController::class);
+
  Route::middleware(['auth'])->group(function () {
         Route::resource('projets', projetController::class);
 
     });
-    Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(function () {
-        Route::get('/dashboard', [Admincontroller::class, 'index'])->name('admin.dashboard');
-        // Autres routes admin ici
+    Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [Admincontroller::class, 'index'])->name('dashboard');
+        Route::post('/projets/{projet}/valider', [Admincontroller::class, 'valider'])->name('projets.valider');
+        Route::post('/projets/{projet}/rejeter', [Admincontroller::class, 'rejeter'])->name('projets.rejeter');
+
     });
 
 

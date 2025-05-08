@@ -48,8 +48,9 @@ class projetController extends Controller
             'forme_juridique' => $request->forme_juridique,
             'plan_affaires' => $request->file('plan_affaires')->store('plans','public'),
             'status' => 'en attente',
-        ]);
 
+        ]);
+        notify()->success('Projet soumis avec succès','projet');
 
         return redirect()->route('promoteur.dashboard')->with('success', 'Projet soumis avec succès.');
     }

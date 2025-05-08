@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <title>(@yield('title'))</title>
+    @notifyCss
+
 </head>
 <body>
     <nav class="bg-dark p-4 " style="display: flex; justify-content: space-between;">
@@ -39,8 +41,10 @@
         @endif
     </nav>
     <div>
+        <x-notify::notify />
         @yield('content')
     </div>
+    @notifyJs
 
 </body>
 </html>

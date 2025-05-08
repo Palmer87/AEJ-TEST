@@ -23,7 +23,7 @@ class creerProjeRequest extends FormRequest
                 'titre' => 'required|string',
                 'type_projet' => 'required|string',
                 'forme_juridique' => 'required|string',
-                'etat' => 'required|string',
+
                 'plan_affaires' => 'file|mimes:pdf|nullable',
 
             ];

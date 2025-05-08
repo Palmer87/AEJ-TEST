@@ -47,8 +47,8 @@
     </div>
     <!-- Bouton Nouveau Projet -->
 <div class="d-flex justify-content-end mb-3">
-    <a href="{{ route('gestionnaires.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg"></i> Nouveau gestionnaire de projet
+    <a href="{{ route('projets.create') }}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nouveau projet
     </a>
 </div>
 
@@ -58,7 +58,7 @@
 
 <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
-        Les promoteur
+        Vos projets
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -67,45 +67,70 @@
                     <tr>
                         <th>#</th>
                         <th>Nom du promoteur</th>
-                        <th>email</th>
-                        <th>Date de naissance</th>
-                        <th>Lieu de naissance</th>
-                        <th>Numero de telephone</th>
-                        <th>Numero CNI</th>
+                        <th>Titre</th>
+                        <th>status</th>
+                        <th>Date de soumission</th>
                         @if(auth()->user()->role === 'admin')
                             <th>Actions</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($promoteurs as $promoteur)
+                    @forelse($projets as $projet)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>{{ $promoteur->user->name }}</td>
-                        <td>{{ $promoteur->user->email }}</td>
-                        <td>{{ $promoteur->date_naissance }}</td>
-                        <td>{{ $promoteur->lieu_naissance }}</td>
-                        <td>{{ $promoteur->numero_telephone }}</td>
-                        <td>{{ $promoteur->numero_cni }}</td>
-                        @if(auth()->user()->role === 'admin')
-                            <td>
-                                <form action="{{ route('promoteurs.destroy', $promoteur) }}" method="POST">
+                        <td>{{ $projet->promoteur->user->name }}</td>
+
+
+
+                        <td>{{ $projet->titre }}</td>
+                        <td>
+                            <span class="badge bg-{{
+                                $projet->status === 'valide' ? 'success' :
+                                ($projet->status === 'rejeté' ? 'danger' : 'warning') }}">
+                                {{ ucfirst($projet->status) }}
+                            </span>
+                        </td>
+                        <td>{{ $projet->created_at->format('d/m/Y') }}</td>
+
+                        @if(auth()->check() && auth()->user()->isAdmin())
+                        <td>
+                            @if($projet->status === 'en attente')
+
+                                <form action="{{ route('admin.projets.valider', $projet) }}" method="POST" class="d-inline">
                                     @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce promoteur?')">Supprimer</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Valider</button>
                                 </form>
-                            </td>
+
+
+                                <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#rejeterForm{{ $projet->id }}">
+                                    Rejeter
+                                </button>
+
+                                <div class="collapse mt-2" id="rejeterForm{{ $projet->id }}">
+                                    <form action="{{ route('admin.projets.rejeter', $projet) }}" method="POST">
+                                        @csrf
+                                        <textarea name="justification" class="form-control mb-2" rows="2" required placeholder="Motif du rejet"></textarea>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Confirmer le rejet</button>
+                                    </form>
+                                </div>
+                            @else
+                                <em class="text-muted">Aucune action</em>
+                            @endif
+                        </td>
                         @endif
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6">Aucun projet enregistré.</td>
+                        <td colspan="5" class="text-center text-muted">Aucun projet pour le moment.</td>
                     </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+</div>
 @endsection
 
 

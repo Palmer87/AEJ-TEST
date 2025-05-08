@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -60,9 +60,20 @@ class User extends Authenticatable
         'role',
     ];
     public function promoteur()
-    {
-        return $this->hasOne(Promoteur::class, 'utilisateur_id');
-    }
+{
+    return $this->hasOne(Promoteur::class);
+}
+
+    public function isAdmin()
+{
+    return $this->role === 'admin';
+}
+public function gestionnaire()
+{
+    return $this->hasOne(Gestionnaire::class,);
+}
+
+
 
 
     /**

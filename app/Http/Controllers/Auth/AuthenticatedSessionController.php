@@ -24,33 +24,23 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse
 {
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    $request->authenticate();
 
-    if (Auth::attempt($request->only('email', 'password'))) {
-        $request->session()->regenerate();
+    $request->session()->regenerate();
 
-        $user = Auth::user();
+    $user = Auth::user();
 
-        if ($user->role === 'promoteur') {
-            return redirect()->route('promoteur.dashboard');
-        } elseif ($user->role === 'gestionnaire') {
-            return redirect()->route('dashboard.gestionnaire');
-        } elseif($user->role === 'admin') {
-            return redirect()->route('dashboard.admin');
-        }else {
-            return redirect()->route('home')->with('error', 'Rôle non reconnu.');
-        }
-
+    if ($user->role === 'promoteur') {
+        return redirect()->route('promoteur.dashboard');
+    } elseif ($user->role === 'gestionnaire') {
+        return redirect()->route('gestionnaire.dashboard');
+    } elseif($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }else {
+        return redirect()->route('home')->with('error', 'Rôle non reconnu.');
     }
-
-    throw ValidationException::withMessages([
-        'email' => __('auth.failed'),
-    ]);
 }
 
 

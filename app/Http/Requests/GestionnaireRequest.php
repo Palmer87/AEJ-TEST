@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PromoteurRrequest extends FormRequest
+class GestionnaireRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,17 +22,12 @@ class PromoteurRrequest extends FormRequest
     public function rules(): array
     {
         return [
-        'name' => 'required|max:255|string',
-        'prenoms' => 'required',
-        'email' => 'required|email|unique:users,email|lowercase',
-        'password' => 'required|min:6|alpha_num|confirmed',
-        'date_naissance' => 'required',
-        'lieu_naissance' => 'required',
-        'numero_cni' => 'required'|'unique:promoteurs,numero_cni',
-        'cni_image' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
-
+            'poste' => 'required|string|max:255',
+            'telephone' => 'required|string|max:20',
+            'adresse' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' =>'required|string|min:8',
         ];
-
-
     }
 }

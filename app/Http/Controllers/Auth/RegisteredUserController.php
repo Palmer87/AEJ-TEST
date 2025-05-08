@@ -35,6 +35,8 @@ class RegisteredUserController extends Controller
     {
         DB:: beginTransaction();
         try{
+            $request->validated();
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -50,14 +52,13 @@ class RegisteredUserController extends Controller
         if ($request->hasFile('cni_image')) {
             $promoteur->cni_image = $request->file('cni_image')->store('cni', 'public');
         }
-
-
         $promoteur->save();
         DB::commit();
 
 
         event(new Registered($user));
         Auth::login($user);
+        notify()->success('Welcome to Laravel Notify ⚡️', 'My custom title');
 
         return redirect()->route('promoteur.dashboard');
     }

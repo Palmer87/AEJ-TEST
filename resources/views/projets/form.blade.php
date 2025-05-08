@@ -13,6 +13,20 @@
                 <form class="vstack gap-3" action="{{ route($projet->exists ? 'projets.update':'projets.store', $projet) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method($projet->exists ? 'PUT' : 'POST')
+                    @if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
+@if($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+        </ul>
+    </div>
+@endif
+
 
                     <div class="row">
                         @include('shared.input', [

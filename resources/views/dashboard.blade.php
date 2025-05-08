@@ -46,6 +46,8 @@
     </div>
 
     <!-- Tableau des projets -->
+    @php use Illuminate\Support\Str; @endphp
+
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
             Vos projets
@@ -59,6 +61,9 @@
                             <th>Nom</th>
                             <th>Statut</th>
                             <th>Date de soumission</th>
+                            @if(auth()->user()->role === 'admin')
+                                <th>Actions</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -74,10 +79,38 @@
                                 </span>
                             </td>
                             <td>{{ $projet->created_at->format('d/m/Y') }}</td>
+
+                            @if(auth()->user()->role === 'admin')
+                            <td>
+                                @if($projet->statut === 'en attente')
+                                    {{-- Bouton Valider --}}
+                                    <form action="{{ route('admin.projets.valider', $projet) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-sm btn-success">Valider</button>
+                                    </form>
+
+                                    {{-- Formulaire de rejet --}}
+                                    <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#rejeterForm{{ $projet->id }}">
+                                        Rejeter
+                                    </button>
+
+                                    <div class="collapse mt-2" id="rejeterForm{{ $projet->id }}">
+                                        <form action="{{ route('admin.projets.rejeter', $projet) }}" method="POST">
+                                            @csrf
+                                            <textarea name="justification" class="form-control mb-2" rows="2" required placeholder="Motif du rejet"></textarea>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Confirmer le rejet</button>
+                                        </form>
+                                    </div>
+                                @else
+                                    <em class="text-muted">Aucune action</em>
+                                @endif
+                            </td>
+                            @endif
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="4" class="text-center text-muted">Aucun projet pour le moment.</td>
+                            <td colspan="5" class="text-center text-muted">Aucun projet pour le moment.</td>
                         </tr>
                         @endforelse
                     </tbody>
@@ -85,7 +118,7 @@
             </div>
         </div>
     </div>
-</div>
+
 @endsection
 
 

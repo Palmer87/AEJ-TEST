@@ -23,8 +23,6 @@
         >
     @else
 
-
-
     <input
         class="form-control @error($name) is-invalid @enderror"
         id="{{ $name }}"

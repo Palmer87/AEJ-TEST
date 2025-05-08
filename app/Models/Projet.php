@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $promoteur_id
@@ -44,6 +44,6 @@ class Projet extends Model
     ];
     public function promoteur()
     {
-        return $this->belongsTo(Promoteur::class);
+        return $this->belongsTo(Promoteur::class,'promoteur_id');
     }
 }
