@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PromoteurRrequest;
+use App\Http\Requests\PromoteurRequest;
 use App\Models\Promoteur;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -13,60 +13,66 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(): View
-    {
+    public function create(){
         return view('auth.register');
     }
-
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(PromoteurRrequest $request): RedirectResponse
+    public function store(PromoteurRequest $request)
     {
-        DB:: beginTransaction();
-        try{
-            $request->validated();
+        // Valider et logger les données
+        $validated = $request->validated();
+        \Log::debug('Données validées:', $validated);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'promoteur',
-        ]);
+        try {
+            DB::beginTransaction();
 
-        $promoteur = new Promoteur();
-        $promoteur->utilisateur_id = $user->id;
-        $promoteur->date_naissance = $request->date_naissance;
-        $promoteur->lieu_naissance = $request->lieu_naissance;
-        $promoteur->numero_cni = $request->numero_cni;
-        if ($request->hasFile('cni_image')) {
-            $promoteur->cni_image = $request->file('cni_image')->store('cni', 'public');
+            // Création de l'utilisateur avec tous les champs requis
+            $user = User::create([
+                'name' => $validated['name'],
+                'prenom' => $validated['prenom'], // Assurez-vous que ce champ est bien envoyé
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => 'promoteur'
+            ]);
+
+            // Enregistrement du fichier CNI
+            $cniPath = $request->file('cni_image')->store('cni_images', 'public');
+
+            // Création du promoteur
+            $promoteur = Promoteur::create([
+                'utilisateur_id' => $user->id,
+                'date_naissance' => $validated['date_naissance'],
+                'lieu_naissance' => $validated['lieu_naissance'],
+                'numero_cni' => $validated['numero_cni'],
+                'cni_image' => $cniPath
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'user' => $user->makeVisible(['prenom']), // Force l'affichage du prénom
+                'promoteur' => $promoteur
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Erreur inscription', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'input' => $request->all()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erreur lors de l\'inscription',
+                'error' => $e->getMessage()
+            ], 500);
         }
-        $promoteur->save();
-        DB::commit();
-
-
-        event(new Registered($user));
-        Auth::login($user);
-        notify()->success('Welcome to Laravel Notify ⚡️', 'My custom title');
-
-        return redirect()->route('promoteur.dashboard');
     }
-    catch(\Exception $e){
-        DB::rollBack();
-        Log::error('Erreur lors de la du promotuer :'.$e->getMessage());
-        return redirect()->back()->withErrors(['error' => 'Une erreur est survenue lors de l\'enregistrement.']);
-    }
-    }
-
 }

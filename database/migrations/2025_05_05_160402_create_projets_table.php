@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('plan_affaires')->nullable();
             $table->enum('status', ['en attente', 'validé', 'rejeté'])->default('en attente');
             $table->timestamps();
-
             $table->foreign('promoteur_id')->references('id')->on('promoteurs')->onDelete('cascade');
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProjetStatus;
 use App\Models\Projet;
 use App\Models\Promoteur;
 use App\Models\User;
@@ -19,7 +20,8 @@ class Admincontroller extends Controller
         }
         public function valider(Projet $projet)
         {
-            $projet->update(['statut' => 'valide']);
+                $projet->update(['status' => \App\Enums\ProjetStatus::VALIDE->value]);
+
             notify()->success('Projet validé avec succès','Projet');
             return back()->with('success', 'Projet validé avec succès.');
         }
@@ -29,11 +31,11 @@ class Admincontroller extends Controller
             $request->validate([
                 'justification' => 'required|string|max:1000',
             ]);
+        $projet->update([
+            'status' => ProjetStatus::REJETE->value,
+            'motif_rejet' => $request->justification,
+        ]);
 
-            $projet->update([
-                'statut' => 'rejeté',
-                'motif_rejet' => $request->justification,
-            ]);
             notify()->error('Projet rejeté avec justification','Projet');
 
             return back()->with('success', 'Projet rejeté avec justification.');

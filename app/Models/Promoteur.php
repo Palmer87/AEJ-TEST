@@ -37,7 +37,7 @@ class Promoteur extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'utilisateur_id');
+        return $this->belongsTo(User::class,'utilisateur_id' );
     }
 
     public function projets()

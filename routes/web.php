@@ -20,6 +20,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('promoteurs', Admincontroller::class);
+    Route::get('dashboard/promoteur', [PromoteurController::class, 'dashboard'])
+        ->name('promoteur.dashboard')
+        ->middleware('auth');
+    Route::resource('promoteurs', PromoteurController::class);
+    Route::post('/projets/{projet}/valider', [PromoteurController::class, 'valider'])->name('projets.valider');
+    Route::post('/projets/{projet}/rejeter', [PromoteurController::class, 'rejeter'])->name('projets.rejeter');
 });
 
 
@@ -38,6 +44,7 @@ route::resource('gestionnaires', GestionnaireController::class);
     });
     Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [Admincontroller::class, 'index'])->name('dashboard');
+
         Route::post('/projets/{projet}/valider', [Admincontroller::class, 'valider'])->name('projets.valider');
         Route::post('/projets/{projet}/rejeter', [Admincontroller::class, 'rejeter'])->name('projets.rejeter');
 

@@ -11,6 +11,9 @@
                 </h4>
             </div>
             <div class="card-body">
+                @if(session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
                 <form class="vstack gap-3" action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
@@ -22,12 +25,13 @@
                             'value' => old('name')
                         ])
 
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'prenoms',
-                            'label' => 'Prénoms',
-                            'value' => old('prenoms')
-                        ])
+                         @include('shared.input', [
+                                'class' => 'col-md-6',
+                                'name' => 'prenom',
+                                'label' => 'Prénom',
+                                'value' => old('prenom')
+                            ])
+                        </div>
                     </div>
 
                     <div class="row">

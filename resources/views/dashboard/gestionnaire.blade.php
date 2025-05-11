@@ -70,7 +70,7 @@
                         <th>Titre</th>
                         <th>status</th>
                         <th>Date de soumission</th>
-                        @if(auth()->user()->role === 'admin')
+                        @if(auth()->user()->role === 'gestionnaire')
                             <th>Actions</th>
                         @endif
                     </tr>
@@ -93,7 +93,7 @@
                         </td>
                         <td>{{ $projet->created_at->format('d/m/Y') }}</td>
 
-                        @if(auth()->check() && auth()->user()->isAdmin())
+                        @if(auth()->check() && auth()->user()->role === 'gestionnaire')
                         <td>
                             @if($projet->status === 'en attente')
 

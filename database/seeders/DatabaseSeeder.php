@@ -9,19 +9,25 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
-    public function run(): void
-    {
 
-        User::updateOrCreate(
-            ['email' => 'admin@gamil.com'],
-            [
-                'name' => 'Administrateur',
-                'password' => Hash::make('Admin'),
-                'role' => 'admin',
-            ]
-        );
+    public function run()
+    {
+        User::create([
+            'name' => 'admin',
+            'prenom' => 'admin',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('djue1234'),
+            'role' => 'admin',
+        ]);
+
+
+        User::create([
+            'name' => 'admin',
+            'prenom' => 'admin',
+            'email' => 'admin1@gamil.com',
+            'password' => Hash::make('djue1234'),
+            'role' => 'admin',
+        ]);
     }
+
 }

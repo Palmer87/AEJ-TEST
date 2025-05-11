@@ -23,8 +23,8 @@ class projetController extends Controller
 
         $user = Auth::user();
 
-        if (!$user || !$user->promoteur) {
-            return redirect()->route('login')->with('error', 'Vous devez être connecté comme promoteur pour soumettre un projet.');
+        if (!$user->promoteur) {
+            return back()->with('error', 'Vous n\'avez pas les autorisations nécessaires pour créer un projet.');
         }
 
         $promoteur = $user->promoteur;

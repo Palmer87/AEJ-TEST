@@ -20,7 +20,7 @@
         @if (Auth::check())
         <ul>
             <li>
-                <a href="{{ route('promoteur.dashboard') }}" class="text-white">Dashboard</a>
+                <a href="{{ route('promoteurs.index') }}" class="text-white">Dashboard</a>
             </li>
             <li>
                 <form action="{{ route('logout') }}" method="post">

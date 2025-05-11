@@ -61,7 +61,7 @@ class User extends Authenticatable
     ];
     public function promoteur()
 {
-    return $this->hasOne(Promoteur::class);
+    return $this->hasOne(Promoteur::class,'utilisateur_id');
 }
 
     public function isAdmin()

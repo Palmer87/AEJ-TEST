@@ -17,7 +17,7 @@ class GestionnaireController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function dashboard()
     {
         $projets = Projet::with('promoteur.user')->get();
         $promoteurs = Promoteur::with('user')->get();
