@@ -10,43 +10,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class Admincontroller extends Controller
+
 {
         public function index()
         {
+            $user = Auth::user();
+            
             $projets = Projet::with('promoteur.user')->get();
             $promoteurs = Promoteur::with('user')->get();
-            return view('dashboard.admin', compact('projets','promoteurs'));
+            return view('dashboard.admin', compact('projets','promoteurs','user'));
 
-        }
-        public function valider(Projet $projet)
-        {
-                $projet->update(['status' => \App\Enums\ProjetStatus::VALIDE->value]);
-
-            notify()->success('Projet validé avec succès','Projet');
-            return back()->with('success', 'Projet validé avec succès.');
-        }
-
-        public function rejeter(Request $request, Projet $projet)
-        {
-            $request->validate([
-                'justification' => 'required|string|max:1000',
-            ]);
-        $projet->update([
-            'status' => ProjetStatus::REJETE->value,
-            'motif_rejet' => $request->justification,
-        ]);
-
-            notify()->error('Projet rejeté avec justification','Projet');
-
-            return back()->with('success', 'Projet rejeté avec justification.');
         }
         public function destroy( string $id)
-        {
-            $user = User::findOrFail($id);
-            $user->delete();
-            notify()->success('Promoteur supprimé avec succès','utilisateur');
-            return back()->with('success', 'Promoteur supprimé avec succès.');
-        }
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        notify()->success('Promoteur supprimé avec succès','utilisateur');
+        return back()->with('success', 'Promoteur supprimé avec succès.');
+    }
+
 
  }
 

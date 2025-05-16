@@ -2,96 +2,101 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Admin\CreerProjetRequest as AdminCreerProjetRequest;
-use App\Http\Requests\creerProjeRequest;
-use App\Http\Requests\CreerProjetRequest;
 use App\Models\Projet;
+use Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class projetController extends Controller
+class ProjetController extends Controller
 {
-
-    public function create()
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        return view('projets.form', ['projet' => new Projet()]);
+
     }
 
-    public function store(creerProjeRequest $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $request->validated();
+        return view('projets.create');
+    }
 
-        $user = Auth::user();
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {dd($request);
+        // vali
+        $validatedData = $request->validate([
+            'titre' => 'required|string|max:255',
+            'description' => 'required|string',
+            'type_projet' =>'required|string|max:255',
+            'plan_affaires' =>'required|string',
+            'form_juridique' =>'required|string',
 
-        if (!$user->promoteur) {
-            return back()->with('error', 'Vous n\'avez pas les autorisations nécessaires pour créer un projet.');
-        }
+        ]);
 
-        $promoteur = $user->promoteur;
 
-        if (!$request->hasFile('plan_affaires')) {
-            return back()->with('error', 'Le fichier n\'a pas été reçu.');
-        }
-
-        $file = $request->file('plan_affaires');
-        if (!$file->isValid()) {
-            return back()->with('error', 'Le fichier n\'est pas valide.');
-        }
-        if ($file->getClientOriginalExtension() !== 'pdf') {
-            return back()->with('error', 'Le fichier doit être au format PDF.');
-        }
-
-        Projet::create([
-            'promoteur_id' => $promoteur->id,
-            'titre' => $request->titre,
-            'type_projet' => $request->type_projet,
-            'forme_juridique' => $request->forme_juridique,
-            'plan_affaires' => $request->file('plan_affaires')->store('plans','public'),
+        $Projet=Projet::create([
+            'titre' =>$validatedData['titre'],
+            'description' =>$validatedData['description'],
+            'type_projet' =>$validatedData['type_projet'],
+            'plan_affaires' =>$validatedData['plan_affaires'],
+            'form_juridique' =>$validatedData['form_juridique'],
+            'promoteur_id' => Auth::user()->promoteur->id, // <- foreign key reference
             'status' => 'en attente',
 
         ]);
-        notify()->success('Projet soumis avec succès','projet');
 
-        return redirect()->route('promoteur.dashboard')->with('success', 'Projet soumis avec succès.');
+
     }
 
-
-
-    public function show(Projet $projet)
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-
-        return view('projets.show', ['projet' => $projet]);
+        //
     }
 
-    public function edit(Projet $projet)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
     {
-        return view('projets.form', ['projet' => $projet,]);
+        //
     }
 
-
-    public function update(creerProjeRequest $request, string $id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
-        $projet = Projet::findOrFail($id);
-        $data = $request->validated();
-
-        if ($request->hasFile('plan_affaires')) {
-            $data['plan_affaires'] = $request->file('plan_affaires')->store('plans','public');
-        }
-
-        $projet->update($data);
-
-        return redirect()->route('promoteur.dashboard')->with('success', 'Projet mis à jour avec succès');
+        //
     }
-
-
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
+        //
+    }
+    function valider(Request $request, $id)
+    {
         $projet = Projet::findOrFail($id);
-        $projet->delete();
-        return redirect()->route('promoteur.dashboard')->with('success', 'Projet supprimé avec succès');
+        $projet->status = 'validé';
+        $projet->save();
+        return redirect()->back()->with('success', 'Projet validé avec succès.');
+    }
+    function rejeter(Request $request, $id)
+    {
+        $projet = Projet::findOrFail($id);
+        $projet->status = 'rejeté';
+        $projet->save();
+        return redirect()->back()->with('success', 'Projet rejeté avec succès.');
     }
 }

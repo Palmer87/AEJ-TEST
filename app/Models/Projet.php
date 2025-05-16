@@ -39,11 +39,12 @@ class Projet extends Model
         'type_projet',
         'forme_juridique',
         'plan_affaires',
-        'status'
+        'status',
+        'description'
 
     ];
     public function promoteur()
     {
-        return $this->belongsTo(Promoteur::class,'promoteur_id');
+        return $this->belongsTo(Promoteur::class);
     }
 }

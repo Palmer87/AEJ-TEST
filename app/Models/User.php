@@ -58,11 +58,13 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'adresse'
+
     ];
     public function promoteur()
-{
-    return $this->hasOne(Promoteur::class,'utilisateur_id');
-}
+    {
+        return $this->hasOne(Promoteur::class,'user_id'); // <- clé étrangère correcte
+    }
 
     public function isAdmin()
 {

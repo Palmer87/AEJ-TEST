@@ -5,7 +5,7 @@
 <div class="container py-4">
     <!-- Header -->
     <div class="mb-4">
-        <h1 class="h3">Bienvenue, {{ Auth::user()->name ?? 'Utilisateur' }}</h1>
+        <h1 class="h3">Bienvenue, {{ Auth::user()->email ?? 'Utilisateur' }}</h1>
         <p class="text-muted">Voici votre tableau de bord</p>
     </div>
 
@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Validés</h5>
                     <p class="card-text display-6">
-                        {{ $projets->where('statut', 'valide')->count() ?? 0 }}
+                        {{ $projets->where('status', 'validé')->count() ?? 0 }}
                     </p>
                     <p class="text-muted">Projets approuvés</p>
                 </div>
@@ -66,7 +66,7 @@
                             <th>La forme juridique</th>
                             <th>Etat du projet</th>
                             <th>Plan d'affaires</th>
-                            <th>Action</th>
+                            <th>date</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,7 +75,13 @@
                             <td>{{ $projet->titre }}</td>
                             <td>{{ $projet->type_projet }}</td>
                             <td>{{ $projet->forme_juridique }}</td>
-                            <td>{{ $projet->status }}</td>
+                            <td>
+                                <span class="badge bg-{{
+                                    $projet->status === 'validé' ? 'success' :
+                                    ($projet->status === 'rejeté' ? 'danger' : 'warning') }}">
+                                    {{ ucfirst($projet->status) }}
+                                </span>
+                            </td>
                             <td>
                                 @if($projet->plan_affaires)
                                     <a href="{{ asset('storage/'.$projet->plan_affaires) }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-info" onclick="event.stopPropagation()">
@@ -85,19 +91,12 @@
                                     <span class="text-muted">Aucun fichier</span>
                                 @endif
                             </td>
-                            <td>
-                                <a href="{{ route('projets.show', [$projet->id,'titre'=>$projet->titre]) }}" class="btn btn-info">Voir</a>
-                                <a href="{{ route('projets.edit', $projet->id) }}" class="btn btn-primary">Modifier</a>
-                                <form action="{{ route('projets.destroy', $projet->id) }}" method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Supprimer</button>
-                                </form>
-                            </td>
+                            <td>{{ $projet->created_at->format('d-m-Y') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>

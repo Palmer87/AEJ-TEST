@@ -24,29 +24,30 @@ Route::middleware(['auth'])->group(function () {
         ->name('promoteur.dashboard')
         ->middleware('auth');
     Route::resource('promoteurs', PromoteurController::class);
-    Route::post('/projets/{projet}/valider', [PromoteurController::class, 'valider'])->name('projets.valider');
-    Route::post('/projets/{projet}/rejeter', [PromoteurController::class, 'rejeter'])->name('projets.rejeter');
+
 });
 
 
 
 
 
-Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])
-    ->name('gestionnaire.dashboard')
-    ->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('gestionnaires', GestionnaireController::class);
+    Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])->name('gestionnaire.dashboard');
 
-route::resource('gestionnaires', GestionnaireController::class);
 
- Route::middleware(['auth'])->group(function () {
-        Route::resource('projets', projetController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('projets', projetController::class);
+    Route::post('/projets/{id}/valider', [ProjetController::class, 'valider'])->name('projets.valider');
+    Route::post('/projets/{id}/rejeter', [ProjetController::class, 'rejeter'])->name('projets.rejeter');
 
     });
-    Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [Admincontroller::class, 'index'])->name('dashboard');
 
-        Route::post('/projets/{projet}/valider', [Admincontroller::class, 'valider'])->name('projets.valider');
-        Route::post('/projets/{projet}/rejeter', [Admincontroller::class, 'rejeter'])->name('projets.rejeter');
 
     });
 

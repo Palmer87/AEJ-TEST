@@ -45,7 +45,7 @@ class RegisteredUserController extends Controller
 
             // Création du promoteur
             $promoteur = Promoteur::create([
-                'utilisateur_id' => $user->id,
+                'user_id' => $user->id,
                 'date_naissance' => $validated['date_naissance'],
                 'lieu_naissance' => $validated['lieu_naissance'],
                 'numero_cni' => $validated['numero_cni'],
@@ -53,26 +53,16 @@ class RegisteredUserController extends Controller
             ]);
 
             DB::commit();
+            notify()->success('Votre compte a été créé avec succès.');
 
-            return response()->json([
-                'success' => true,
-                'user' => $user->makeVisible(['prenom']), // Force l'affichage du prénom
-                'promoteur' => $promoteur
-            ]);
+            return redirect()->route('login');
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Erreur inscription', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'input' => $request->all()
-            ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur lors de l\'inscription',
-                'error' => $e->getMessage()
-            ], 500);
+
+
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de l\'enregistrement.');
         }
     }
 }

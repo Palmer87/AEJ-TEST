@@ -16,8 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('prenom')->nullable();
             $table->string('email')->unique();
+            $table->string('telephone')->nullable();
+            $table->string('adresse')->nullable();
+            $table->string('ville')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('role')->default('promoteur');
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
 
@@ -38,13 +43,8 @@ return new class extends Migration
             $table->integer('last_activity')->index();
         });
         // Dans votre migration users
-           
 
-        {
-            Schema::table('users', function (Blueprint $table) {
-                $table->string('role')->default('promoteur');
-            });
-        }
+
 
     }
 

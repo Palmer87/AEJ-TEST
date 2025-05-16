@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PromoteurRrequest;
+use App\Models\Projet;
 use App\Models\Promoteur;
 use App\Models\User;
 use Hash;
@@ -15,20 +16,20 @@ class PromoteurController extends Controller
 
     public function dashboard()
     {
-        $userId = Auth::id(); // Récupère l’ID de l’utilisateur connecté
+        if(Auth::user()->role == 'promoteur'){
+            $user = Auth::user();
 
-        // Recherche le promoteur lié à cet utilisateur, avec la relation "user"
-        $promoteur = Promoteur::with('user')->where('utilisateur_id', $userId)->first();
+            $projets = Projet::paginate(5);
+            return view('dashboard.promoteur', compact('projets', 'user'));
+        }else{
+            notify()->error('Vous n\'avez pas accès à cette page');
+            return redirect()->back();
+        }
 
-
-        return view('dashboard.promoteur', [
-            'promoteur' => $promoteur,
-            'projets' => $promoteur?->projets ?? collect(), // Utilisation du null safe pour éviter l’erreur
-        ]);
 
 
     }
-   
+
 
 
 

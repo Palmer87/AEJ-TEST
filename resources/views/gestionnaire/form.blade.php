@@ -1,92 +1,98 @@
-@extends('admin.base')
-
+@extends('base')
 @section('content')
 <div class="row">
     <div class="col-md-12">
         <div class="card">
             <div class="card-header">
                 <h4>
-                    Inscription Promoteur
-                    <a href="{{ url('/') }}" class="btn btn-danger float-end">Retour</a>
+                    Inscription d'un nouveau gestionnaire
+                    <a href="{{ url('/resources/views/dashboard/admin.blade.php') }}" class="btn btn-danger float-end">Retour</a>
                 </h4>
             </div>
             <div class="card-body">
                 @if(session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
+                    <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
+
                 <form class="vstack gap-3" action="{{ route('gestionnaires.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="row">
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'name',
-                            'label' => 'Nom',
-                            'value' => old('name')
-                        ])
-
+                    <!-- Nom -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="name" class="form-label">Nom</label>
+                            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
+                            @error('name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div class="row">
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'email',
-                            'label' => 'Adresse email',
-                            'type' => 'email',
-                            'value' => old('email')
-                        ])
+                    <!-- Email -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="email" class="form-label">Adresse email</label>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}">
+                            @error('email')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                    <div class="row">
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'password',
-                            'label' => 'Mot de passe',
-                            'type' => 'password',
-                        ])
+                    <!-- Mot de passe & confirmation -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" name="password" id="password" class="form-control">
+                            @error('password')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'password_confirmation',
-                            'label' => 'Confirmation mot de passe',
-                            'type' => 'password',
-                        ])
+                        <div class="col">
+                            <label for="password_confirmation" class="form-label">Confirmation mot de passe</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">
+                        </div>
                     </div>
 
-                    <div class="row">
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'poste',
-                            'label' => 'Poste occupé',
-                            'value' => old('poste'),
-                        ])
+                    <!-- Poste & téléphone -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="poste" class="form-label">Poste occupé</label>
+                            <input type="text" name="poste" id="poste" class="form-control" value="{{ old('poste') }}">
+                            @error('poste')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
 
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'telephone',
-                            'type'=>'phone',
-                            'value' => old('telephone'),
-                            'label' => 'Numéro de téléphone',
-
-                        ])
+                        <div class="col">
+                            <label for="telephone" class="form-label">Numéro de téléphone</label>
+                            <input type="tel" name="telephone" id="telephone" class="form-control" value="{{ old('telephone') }}">
+                            @error('telephone')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
 
-                        @include('shared.input', [
-                            'class' => 'col',
-                            'name' => 'adresse',
-                            'label' => 'Adresse',
-                            'value' => old('adresse'),
-
-                        ])
+                    <!-- Adresse -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="adresse" class="form-label">Adresse</label>
+                            <input type="text" name="adresse" id="adresse" class="form-control" value="{{ old('adresse') }}">
+                            @error('adresse')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
+
+                    <!-- Submit -->
                     <div class="row mt-3">
                         <div class="col">
-                            <button type="submit" class="btn btn-primary">
-                                Créer un gestionnaire
-                            </button>
+                            <button type="submit" class="btn btn-primary">Créer un gestionnaire</button>
                         </div>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

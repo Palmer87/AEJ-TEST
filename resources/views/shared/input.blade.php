@@ -32,7 +32,7 @@
     >
     @endif
 
-    @error($name)
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
+    @error('titre')
+    <small class="text-danger">{{ $message }}</small>
+@enderror
 </div>

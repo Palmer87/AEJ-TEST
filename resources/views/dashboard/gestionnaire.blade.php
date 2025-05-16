@@ -38,7 +38,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Validés</h5>
                     <p class="card-text display-6">
-                        {{ $projets->where('status', 'valide')->count() ?? 0 }}
+                        {{ $projets->where('status', 'validé')->count() ?? 0 }}
                     </p>
                     <p class="text-muted">Projets approuvés</p>
                 </div>
@@ -80,43 +80,43 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $projet->promoteur->user->name }}</td>
-
-
-
                         <td>{{ $projet->titre }}</td>
                         <td>
                             <span class="badge bg-{{
-                                $projet->status === 'valide' ? 'success' :
+                                $projet->status === 'validé' ? 'success' :
                                 ($projet->status === 'rejeté' ? 'danger' : 'warning') }}">
                                 {{ ucfirst($projet->status) }}
                             </span>
+                        </td>
+                        <td>
+                            @if($projet->plan_affaires)
+                                <a href="{{ asset('storage/'.$projet->plan_affaires) }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-info" onclick="event.stopPropagation()">
+                                    <i class="fas fa-file-pdf"></i> Voir PDF
+                                </a>
+                            @else
+                                <span class="text-muted">Aucun fichier</span>
+                            @endif
                         </td>
                         <td>{{ $projet->created_at->format('d/m/Y') }}</td>
 
                         @if(auth()->check() && auth()->user()->role === 'gestionnaire')
                         <td>
                             @if($projet->status === 'en attente')
+                            <form action="{{ route('projets.valider', $projet->id) }}" method="POST">
+                                @csrf
+                                <button type="submit">valider</button>
+                            </form>
 
-                                <form action="{{ route('admin.projets.valider', $projet) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-success">Valider</button>
-                                </form>
-
-
-                                <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#rejeterForm{{ $projet->id }}">
-                                    Rejeter
-                                </button>
 
                                 <div class="collapse mt-2" id="rejeterForm{{ $projet->id }}">
-                                    <form action="{{ route('admin.projets.rejeter', $projet) }}" method="POST">
+                                    <form action="{{ route('projets.rejeter', $projet) }}" method="POST">
                                         @csrf
                                         <textarea name="justification" class="form-control mb-2" rows="2" required placeholder="Motif du rejet"></textarea>
                                         <button type="submit" class="btn btn-sm btn-outline-danger">Confirmer le rejet</button>
                                     </form>
                                 </div>
                             @else
-                                <em class="text-muted">Aucune action</em>
+                                <em class="text-muted">Terminé</em>
                             @endif
                         </td>
                         @endif

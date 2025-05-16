@@ -9,7 +9,7 @@ class Gestionnaire extends Model
     protected $fillable = [
         'user_id',
         'poste',
-        'telephone',
+  
         'adresse',
     ];
     public function user()

@@ -19,9 +19,15 @@ class GestionnaireController extends Controller
      */
     public function dashboard()
     {
-        $projets = Projet::with('promoteur.user')->get();
-        $promoteurs = Promoteur::with('user')->get();
-        return view('dashboard.gestionnaire', compact('projets','promoteurs'));
+        if(Auth::user()->role == 'gestionnaire'){
+            $user = Auth::user();
+            $projets = Projet::with('promoteur.user')->get();
+            $promoteurs = Promoteur::with('user')->get();
+            return view('dashboard.gestionnaire', compact('projets','promoteurs','user'));
+        }else{
+            notify()->error('Vous n\'avez pas les droits pour accéder à cette page');
+            return redirect()->back();
+        }
 
     }
 
@@ -49,7 +55,6 @@ class GestionnaireController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'gestionnaire',
         ]);
-        dd($user);
         $gestionnaire = new Gestionnaire();
         $gestionnaire->user_id = $user->id;
         $gestionnaire->poste = $request->poste;
@@ -120,4 +125,8 @@ class GestionnaireController extends Controller
     {
         //
     }
+
+
+ 
+
 }

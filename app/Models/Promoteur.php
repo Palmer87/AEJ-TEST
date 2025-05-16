@@ -33,16 +33,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Promoteur extends Model
 {
-    protected $fillable = ['utilisateur_id', 'date_naissance', 'lieu_naissance', 'numero_cni', 'cni_image'];
+    protected $fillable = ['user_id', 'date_naissance', 'lieu_naissance', 'numero_cni', 'cni_image'];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'utilisateur_id' );
+        return $this->belongsTo(User::class,'user_id');
     }
 
     public function projets()
 {
-    return $this->hasMany(Projet::class,);
+    return $this->hasMany(Projet::class);
 }
 
 

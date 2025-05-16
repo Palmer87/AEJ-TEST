@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('promoteur_id');
             $table->string('titre');
+            $table->string('description');
             $table->string('type_projet');
             $table->string('forme_juridique');
             $table->string('plan_affaires')->nullable();
