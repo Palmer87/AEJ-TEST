@@ -8,15 +8,29 @@
                     Inscription d'un nouveau gestionnaire
                     <a href="{{ url('/resources/views/dashboard/admin.blade.php') }}" class="btn btn-danger float-end">Retour</a>
                 </h4>
-            </div>
+                </div>
+                        @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+
+
+
+
             <div class="card-body">
+<<<<<<< HEAD
                 @if(session('error'))
                     <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
+=======
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 
                 <form class="vstack gap-3" action="{{ route('gestionnaires.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
+<<<<<<< HEAD
                     <!-- Nom -->
                     <div class="row mb-3">
                         <div class="col">
@@ -26,6 +40,22 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
+=======
+                    <div class="row">
+                        @include('shared.input', [
+                            'class' => 'col',
+                            'name' => 'name',
+                            'label' => 'Nom',
+                            'value' => old('name')
+                        ])
+                        @include('shared.input', [
+                            'class' => 'col',
+                            'name' => 'prenom',
+                            'label' => 'Prénom',
+                            'value' => old('prenom')
+                        ])
+
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
                     </div>
 
                     <!-- Email -->

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
 
+<<<<<<< HEAD
     public function run()
     {
         User::create([
@@ -28,6 +29,17 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('djue1234'),
             'role' => 'admin',
         ]);
+=======
+        User::updateOrCreate(
+            ['email' => 'admin@gamil.com'],
+            [
+                'name' => 'Administrateur',
+                'prenom' => 'Administrateur',
+                'password' => Hash::make('Admin'),
+                'role' => 'admin',
+            ]
+        );
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
     }
 
 }

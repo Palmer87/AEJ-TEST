@@ -45,6 +45,10 @@ return new class extends Migration
         // Dans votre migration users
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 
     }
 

@@ -51,26 +51,38 @@ class GestionnaireController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'prenom'=>$request->prenom,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'gestionnaire',
         ]);
+<<<<<<< HEAD
         $gestionnaire = new Gestionnaire();
         $gestionnaire->user_id = $user->id;
         $gestionnaire->poste = $request->poste;
         $gestionnaire->telephone = $request->telephone;
         $gestionnaire->adresse = $request->adresse;
         $gestionnaire->save();
+=======
+
+        $gestionnaire = Gestionnaire::create([
+            'user_id' => $user->id,
+            'poste' => $request->poste,
+            'telephone' => $request->telephone,
+            'adresse' => $request->adresse,
+        ]);
+
+
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
         DB::commit();
 
-
-        notify()->success('Gestionnaire ajouté avec succès');
-        return redirect()->back();
+//
+        return redirect()->route('admin.dashboard')->with('success','Gestionnaire ajouté avec succès');
         }
         catch(\Exception $e){
             DB::rollback();
-            notify()->error('Erreur lors de l\'ajout du gestionnaire');
-            return redirect()->back()->with('error','Erreur lors de l\'ajout du gestionnaire');
+
+          return redirect()->back()->with('error','Une erreur s\'est produite lors de l\'ajout du gestionnaire');
 
         }
     }
@@ -96,25 +108,8 @@ class GestionnaireController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'poste' => 'required',
-            'telephone' => 'required',
-            'adresse' => 'required',
-        ]);
-        $gestionnaire = Gestionnaire::findOrFail($id);
-        $gestionnaire->user_id = $gestionnaire->user->id;
-        $gestionnaire->poste = $request->poste;
-        $gestionnaire->telephone = $request->telephone;
-        $gestionnaire->adresse = $request->adresse;
-        $gestionnaire->user->name = $request->name;
-        $gestionnaire->user->email = $request->email;
-        $gestionnaire->user->password = Hash::make($request->password);
-        $gestionnaire->user->save();
-        $gestionnaire->save();
-        notify()->success('Gestionnaire modifié avec succès');
+
+
         return redirect()->back();
     }
 

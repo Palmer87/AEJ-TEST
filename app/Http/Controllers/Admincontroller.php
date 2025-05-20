@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class Admincontroller extends Controller
 
 {
-        public function index()
+        public function dashboard()
         {
             $user = Auth::user();
             
@@ -21,6 +21,7 @@ class Admincontroller extends Controller
             return view('dashboard.admin', compact('projets','promoteurs','user'));
 
         }
+<<<<<<< HEAD
         public function destroy( string $id)
     {
         $user = User::findOrFail($id);
@@ -29,6 +30,36 @@ class Admincontroller extends Controller
         return back()->with('success', 'Promoteur supprimé avec succès.');
     }
 
+=======
+        public function valider(Projet $projet)
+        {
+            $projet->update(['statut' => 'valide']);
+
+            return back()->with('success', 'Projet validé avec succès.');
+        }
+
+        public function rejeter(Request $request, Projet $projet)
+        {
+            $request->validate([
+                'justification' => 'required|string|max:1000',
+            ]);
+
+            $projet->update([
+                'statut' => 'rejeté',
+                'motif_rejet' => $request->justification,
+            ]);
+
+
+            return back()->with('success', 'Projet rejeté avec justification.');
+        }
+        public function destroy( string $id)
+        {
+            $user = User::findOrFail($id);
+            $user->delete();
+
+            return back()->with('success', 'Promoteur supprimé avec succès.');
+        }
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 
  }
 

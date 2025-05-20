@@ -20,17 +20,29 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('promoteurs', Admincontroller::class);
+<<<<<<< HEAD
     Route::get('dashboard/promoteur', [PromoteurController::class, 'dashboard'])
         ->name('promoteur.dashboard')
         ->middleware('auth');
     Route::resource('promoteurs', PromoteurController::class);
 
+=======
+    Route::resource('projets', projetController::class);
+    route::resource('gestionnaires', GestionnaireController::class);
+    Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])->name('gestionnaire.dashboard');
+    Route::get('/dashboard/promoteur', [PromoteurController::class, 'dashboard'])->name('promoteur.dashboard');
+    Route::get('/dashboard/admin', [Admincontroller::class, 'dashboard'])->name('admin.dashboard');
+
+    Route::post('/projets/{projet}/valider', [Admincontroller::class, 'valider'])->name('projets.valider');
+    Route::post('/projets/{projet}/rejeter', [Admincontroller::class, 'rejeter'])->name('projets.rejeter');
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 });
 
 
 
 
 
+<<<<<<< HEAD
 Route::middleware(['auth'])->group(function () {
     Route::resource('gestionnaires', GestionnaireController::class);
     Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])->name('gestionnaire.dashboard');
@@ -50,6 +62,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
 
     });
+=======
+>>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 
 
 require __DIR__.'/auth.php';
