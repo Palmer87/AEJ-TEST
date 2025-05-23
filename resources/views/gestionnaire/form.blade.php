@@ -20,27 +20,11 @@
 
 
             <div class="card-body">
-<<<<<<< HEAD
-                @if(session('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
-                @endif
-=======
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 
+>
                 <form class="vstack gap-3" action="{{ route('gestionnaires.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-<<<<<<< HEAD
-                    <!-- Nom -->
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="name" class="form-label">Nom</label>
-                            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}">
-                            @error('name')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-=======
                     <div class="row">
                         @include('shared.input', [
                             'class' => 'col',
@@ -55,7 +39,7 @@
                             'value' => old('prenom')
                         ])
 
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
+
                     </div>
 
                     <!-- Email -->

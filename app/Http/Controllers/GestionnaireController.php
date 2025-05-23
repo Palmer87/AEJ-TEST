@@ -25,7 +25,7 @@ class GestionnaireController extends Controller
             $promoteurs = Promoteur::with('user')->get();
             return view('dashboard.gestionnaire', compact('projets','promoteurs','user'));
         }else{
-            notify()->error('Vous n\'avez pas les droits pour accéder à cette page');
+
             return redirect()->back();
         }
 
@@ -56,15 +56,6 @@ class GestionnaireController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'gestionnaire',
         ]);
-<<<<<<< HEAD
-        $gestionnaire = new Gestionnaire();
-        $gestionnaire->user_id = $user->id;
-        $gestionnaire->poste = $request->poste;
-        $gestionnaire->telephone = $request->telephone;
-        $gestionnaire->adresse = $request->adresse;
-        $gestionnaire->save();
-=======
-
         $gestionnaire = Gestionnaire::create([
             'user_id' => $user->id,
             'poste' => $request->poste,
@@ -73,7 +64,7 @@ class GestionnaireController extends Controller
         ]);
 
 
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
+
         DB::commit();
 
 //
@@ -122,6 +113,6 @@ class GestionnaireController extends Controller
     }
 
 
- 
+
 
 }

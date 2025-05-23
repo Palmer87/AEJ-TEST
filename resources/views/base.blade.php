@@ -3,14 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<<<<<<< HEAD
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin Dashboard</title>
     <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <!-- Bootstrap 4 CSS -->
+
+
+<style>
+                .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        .table thead {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+        }
+        .status-validé { background-color: #198754; color: white; }
+        .status-rejeté { background-color: #dc3545; color: white; }
+        .status-attente { background-color: #ffc107; color: black; }
+
         :root {
             --primary-color: #4e73df;
             --secondary-color: #f8f9fc;
@@ -140,16 +167,10 @@
             }
         }
     </style>
-  @notifyCss
 </head>
-=======
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <title>(@yield('title'))</title>
- @notifyCss
-</head>
+@notifyCss
 <body>
+    <x-notify::notify />
     <nav class="bg-dark p-4 " style="display: flex; justify-content: space-between;">
         <ul>
             <li>
@@ -180,108 +201,65 @@
         @endif
     </nav>
     <div>
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+
         @yield('content')
     </div>
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
+    <script>
+        // Filtrage par recherche
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#projectTable tbody tr');
 
-<body>
-    <div class="wrapper">
-            <nav id="sidebar">
-                <div class="sidebar-header text-center py-4">
-                    <h4 class="text-white">{{ auth()->user()->role }}</h4>
-                </div>
-
-                <ul class="list-unstyled components">
-                    <li class="active">
-                        <a href="#"><i class="fas fa-fw fa-tachometer-alt me-2"></i> Tableau de bord</a>
-                    </li>
-                    @if (auth()->user()->role == 'admin')
-                    <li>
-                       <a href="#"><i class="fas fa-fw fa-users me-2"></i> Utilisateurs</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fas fa-fw fa-chart-bar me-2"></i> Statistiques</a>
-                    </li>
-                    @endif
-
-                    <li>
-                        <a href="#"> <i class="fa-solid fa-briefcase me-2"></i></i>Projet</a>
-                    </li>
-
-                    <li>
-                        <a href="#"><i class="fas fa-fw fa-cog me-2"></i> Paramètres</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Page Content -->
-            <div id="content">
-                <!-- Navbar -->
-                <!-- Navbar -->
-                <nav class="navbar navbar-expand-lg navbar-light py-3">
-                    <div class="container-fluid">
-                        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                            <i class="fas fa-align-left"></i>
-                        </button>
-
-                        <div class="dropdown ms-auto">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://via.placeholder.com/30" class="rounded-circle me-2" alt="Profile">
-                                <span class="d-none d-lg-inline">{{ auth()->user()->role }}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Profil</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <form action="{{ route('logout') }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="dropdown-item"><i class="fas fa-sign-out-alt me-2"></i>Se déconnecter</button>
-                                        </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
-                <x-notify::notify />
-
-
-
-            @yield('content')
-        </div>
-
-        <!-- jQuery -->
-    </div>
-        <!-- Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Toggle sidebar
-            document.getElementById('sidebarCollapse').addEventListener('click', function () {
-                document.getElementById('sidebar').classList.toggle('active');
-                document.getElementById('content').classList.toggle('active');
+            rows.forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
             });
-        </script>
-    @notifyJs
+        });
+
+        // Filtrage par statut
+        document.getElementById('statusFilter').addEventListener('change', function () {
+            let value = this.value.toLowerCase();
+            let rows = document.querySelectorAll('#projectTable tbody tr');
+
+            rows.forEach(row => {
+                let status = row.cells[3].textContent.trim().toLowerCase();
+                row.style.display = value === "" || status.includes(value) ? '' : 'none';
+            });
+        });
+
+        // Tri des colonnes
+        function sortTable(columnIndex) {
+            let table = document.getElementById('projectTable');
+            let switching = true;
+            let dir = "asc";
+            let switchCount = 0;
+
+            while (switching) {
+                switching = false;
+                let rows = table.rows;
+
+                for (let i = 1; i < rows.length - 1; i++) {
+                    let shouldSwitch = false;
+                    let x = rows[i].getElementsByTagName("TD")[columnIndex];
+                    let y = rows[i + 1].getElementsByTagName("TD")[columnIndex];
+
+                    if (dir === "asc" ? x.textContent > y.textContent : x.textContent < y.textContent) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchCount++;
+                } else if (switchCount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    </script>
+
+@notifyJs
 </body>
-<<<<<<< HEAD
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-=======
-
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
 </html>
-
-
-
-
-
-
-
-

@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             ]);
 
             DB::commit();
-            notify()->success('Votre compte a été créé avec succès.');
+
 
             return redirect()->route('login');
 

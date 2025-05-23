@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Projet;
 use Auth;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class ProjetController extends Controller
 {
@@ -28,34 +30,38 @@ class ProjetController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {dd($request);
+    {
         // vali
-        $validatedData = $request->validate([
+
+        $request->validate([
             'titre' => 'required|string|max:255',
             'description' => 'required|string',
             'type_projet' =>'required|string|max:255',
-            'plan_affaires' =>'required|string',
-            'form_juridique' =>'required|string',
+            'plan_affaires' =>'file|mimes:pdf,doc,docx', // Ajoutez les extensions de fichiers autorisées ici, par exemple : 'pdf,doc,docx,odt'
+            'forme_juridique' =>'required|string',
 
         ]);
 
 
-        $Projet=Projet::create([
-            'titre' =>$validatedData['titre'],
-            'description' =>$validatedData['description'],
-            'type_projet' =>$validatedData['type_projet'],
-            'plan_affaires' =>$validatedData['plan_affaires'],
-            'form_juridique' =>$validatedData['form_juridique'],
-            'promoteur_id' => Auth::user()->promoteur->id, // <- foreign key reference
-            'status' => 'en attente',
+
+
+
+
+        $projet=Projet::create([
+            'promoteur_id'=> Auth::user()->promoteur->id,
+            'titre'=>$request->titre,
+            'description'=>$request->description ,
+            'type_projet'=>$request->type_projet ,
+            'plan_affaires'=>$request->file('plan_affaires')->store('plan_affaires'),
+            'forme_juridique'=>$request->forme_juridique ,
+            'status'=> 'en attente',
+
+
+
 
         ]);
-<<<<<<< HEAD
-=======
-        
->>>>>>> ac97c10 (refactor:Améliore la création de gestionnaires en utilisant directement la méthode create dans le modèle, simplifiant ainsi le processus et améliorant la lisibilité du code.)
-
-
+        notify()->success('Projet ajouté avec succès');
+    return redirect()->route('promoteur.dashboard');
     }
 
     /**
@@ -90,17 +96,45 @@ class ProjetController extends Controller
         //
     }
     function valider(Request $request, $id)
-    {
-        $projet = Projet::findOrFail($id);
+    { $projet = Projet::findOrFail($id);
         $projet->status = 'validé';
+        $projet->updated_at = now();
         $projet->save();
-        return redirect()->back()->with('success', 'Projet validé avec succès.');
-    }
-    function rejeter(Request $request, $id)
+
+        // Générer le PDF
+        $pdf = Pdf::loadView('pdf.decision', [
+            'projet' => $projet,
+            'status' => 'validé',
+            'date' => now()->format('d/m/Y'),
+            'justification' => null,
+        ]);
+
+        $fileName = 'decision_projet_'.$projet->id.'.pdf';
+        Storage::put("public/pdfs/$fileName", $pdf->output());
+        notify()->success('Projet validé avec succès');
+        return back();
+        }
+
+    public function rejeter(Request $request, $id)
     {
         $projet = Projet::findOrFail($id);
         $projet->status = 'rejeté';
+        $projet->updated_at = now();
         $projet->save();
-        return redirect()->back()->with('success', 'Projet rejeté avec succès.');
+
+        // Générer le PDF avec justification
+        $pdf = Pdf::loadView('pdf.decision', [
+            'projet' => $projet,
+            'status' => 'rejeté',
+            'date' => now()->format('d/m/Y'),
+            'justification' => $request->justification,
+        ]);
+
+        $fileName = 'decision_projet_'.$projet->titre.'.pdf';
+        Storage::put("public/pdfs/$fileName", $pdf->output());
+        notify()->success('Projet rejeté et PDF généré.');
+        return back();
     }
+
 }
+

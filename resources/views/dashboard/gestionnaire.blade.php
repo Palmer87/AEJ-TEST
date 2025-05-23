@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container py-4">
+
     <!-- Header -->
     <div class="mb-4">
         <h1 class="h3">Bienvenue, {{ Auth::user()->name ?? 'Utilisateur' }}</h1>
@@ -69,6 +70,7 @@
                         <th>Nom du promoteur</th>
                         <th>Titre</th>
                         <th>status</th>
+                        <th>Plan d'affaires</th>
                         <th>Date de soumission</th>
                         @if(auth()->user()->role === 'gestionnaire')
                             <th>Actions</th>
@@ -80,7 +82,12 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $projet->promoteur->user->name }}</td>
-                        <td>{{ $projet->titre }}</td>
+                        <td>
+                            <a href="{{ route('projets.show', $projet->id) }}" class="text-decoration-none">
+                                {{ Str::limit($projet->titre, 20) }}
+                            </a>
+                        </td>
+
                         <td>
                             <span class="badge bg-{{
                                 $projet->status === 'validé' ? 'success' :
@@ -104,15 +111,16 @@
                             @if($projet->status === 'en attente')
                             <form action="{{ route('projets.valider', $projet->id) }}" method="POST">
                                 @csrf
-                                <button type="submit">valider</button>
+                                <button type="submit" class='btn btn-sm btn-success'>valider</button>
                             </form>
-
-
+                            <button class="btn btn-sm btn-danger" type="button" data-bs-toggle="collapse"data-bs-target="#rejeterForm{{ $projet->id }}">
+                            Rejeter
+                            </button>
                                 <div class="collapse mt-2" id="rejeterForm{{ $projet->id }}">
                                     <form action="{{ route('projets.rejeter', $projet) }}" method="POST">
                                         @csrf
                                         <textarea name="justification" class="form-control mb-2" rows="2" required placeholder="Motif du rejet"></textarea>
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Confirmer le rejet</button>
+                                        <button type="submit" class="btn btn-sm  btn-danger">Confirmer le rejet</button>
                                     </form>
                                 </div>
                             @else

@@ -64,6 +64,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Projet whereTypeProjet($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Projet whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $description
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Projet whereDescription($value)
  */
 	class Projet extends \Eloquent {}
 }
@@ -95,7 +97,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Promoteur whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Promoteur whereUtilisateurId($value)
  * @mixin \Eloquent
+ * @property int $user_id
  * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Promoteur whereUserId($value)
  */
 	class Promoteur extends \Eloquent {}
 }

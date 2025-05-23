@@ -7,43 +7,77 @@
                     <div class="card-header">
                         <h4>
                             Ajouter un projet
-                            <a href="{{ url('projets') }}" class="btn btn-danger float-end">Retour</a>
+                            <a href="{{redirect()->back() }}" class="btn btn-danger float-end">Retour</a>
                         </h4>
+
+                        @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('projets.store') }} " method="POST">
+                        <form action="{{ route('projets.store') }} " method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <label for="">Titre du projet</label>
-                                <input type="text" name="nom" class="form-control">
+                                <input type="text" name="titre" class="form-control" id="titre" value="{{old('titre')}}">
+                                @error('titre')
+                                <small class="text-danger">{{ $message }}</small>
+                                 @enderror
                             </div>
 
                             <div class="mb-3">
                                 <label for="">Description</label>
-                                <textarea name="description" rows="3" class="form-control"></textarea>
+                                <textarea name="description" rows="3" class="form-control"
+                                    id="description">{{old('description')}}</textarea>
+                                    @error('description')
+                                    <small class="text-danger">{{ $message }}</small>
+                                     @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="">Type de projet</label>
-                                <select name="type_projet" class="form-control">
-                                    <option value="projet de recherche">Projet de recherche</option>
-                                    <option value="projet d'innovation">Projet d'innovation</option>
-                                    <option value="projet de développement">Projet de développement</option>
+                                <label for="type_projet" class="form-label">Type de projet</label>
+                                <select name="type_projet" id="type_projet" class="form-control" >
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="Agriculture" {{ old('type_projet') == 'Agriculture' ? 'selected' : '' }}>
+                                        Agriculture</option>
+                                    <option value="Technologie" {{ old('type_projet') == 'Technologie' ? 'selected' : '' }}>
+                                        Technologie</option>
+                                    <option value="Commerce" {{ old('type_projet') == 'Commerce' ? 'selected' : '' }}>Commerce
+                                    </option>
+                                    <option value="Industrie" {{ old('type_projet') == 'Industrie' ? 'selected' : '' }}>
+                                        Industrie</option>
+                                    <!-- Ajoute d'autres type_projets si besoin -->
                                 </select>
+                                @error('type_projet')
+                                <small class="text-danger">{{ $message }}</small>
+                                 @enderror
                             </div>
                             <div class="mb-3">
-                                <label for="forme_juridique">Forme juridique</label>
-                                <select name="forme_juridique" class="form-control">
-                                    <option value="Société anonyme">Société anonyme</option>
-                                    <option value="Société à responsabilité limitée">Société à responsabilité limitée</option>
-                                    <option value="Entreprise individuelle">Entreprise individuelle</option>
-                                    <option value="Association">Association</option>
-                                    <option value="Particulier">Particulier</option>
+                                <label for="forme_juridique" class="form-label">Forme juridique</label>
+                                <select name="forme_juridique" id="forme_juridique" class="form-control" >
+                                    <option value="">-- Sélectionnez --</option>
+                                    <option value="SARL" {{ old('forme_juridique') == 'SARL' ? 'selected' : '' }}>SARL
+                                    </option>
+                                    <option value="SA" {{ old('forme_juridique') == 'SA' ? 'selected' : '' }}>SA</option>
+                                    <option value="SNC" {{ old('forme_juridique') == 'SNC' ? 'selected' : '' }}>SNC</option>
+                                    <option value="Entreprise Individuelle" {{ old('forme_juridique') == 'Entreprise Individuelle' ? 'selected' : '' }}>Entreprise Individuelle</option>
+                                    
                                 </select>
+                                @error('forme_juridique')
+                                <small class="text-danger">{{ $message }}</small>
+                                 @enderror
                             </div>
+
+
+
                             <div class="mb-3">
                                 <label for="plan_affaires">Plan d'affaires</label>
-                                <input type="file" name="plan_affaires" class="form-control">
+                                <input type="file" name="plan_affaires" class="form-control" id="plan_affaires">
+                                @error('plan_affaires')
+                                <small class="text-danger">{{ $message }}</small>
+                                 @enderror
                             </div>
 
                             <div class="mb-3">
