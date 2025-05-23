@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('promoteurs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('usert_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('date_naissance');
             $table->string('lieu_naissance');
             $table->string('numero_cni');

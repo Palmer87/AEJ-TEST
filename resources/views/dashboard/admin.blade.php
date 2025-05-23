@@ -172,8 +172,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        @else
-                                            <em class="text-muted text-center">Terminé</em>
+                                        @elseif ($projet->status === 'validé'||$projet->status ==='rejeté'&&$projet->plan_affaires)
+                                            <a href="{{ route('projets.show', $projet) }}" class="btn btn-sm btn-info">Voir</a>
+                                            <a href="{{ asset('storage/pdfs/decision_projet_'. $projet->id .'.pdf'|'storage/pdfs/decision_projet_'.$projet->titre.'pdf') }}"
+                                                download class="btn btn-outline-secondary btn-sm">
+                                                Télécharger PDF
+                                             </a>
                                         @endif
 
                                     </td>

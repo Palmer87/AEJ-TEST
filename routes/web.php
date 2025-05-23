@@ -6,11 +6,20 @@ use App\Http\Controllers\GestionnaireController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\projetController;
 use App\Http\Controllers\PromoteurController;
+use App\Mail\ProjetStatutMail;
+use App\Models\Projet;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     notify()->success('Welcome to Laravel Notify ⚡️') ;
     return view('welcome');
+});
+Route::get('/test-mailable', function () {
+    $user = User::first();
+    $projet = Projet::first();
+    Mail::to($projet->promoteur->user->email)->send(new ProjetStatutMail($projet, 'validé'));
+    return '✅ Email envoyé avec PDF joint !';
 });
 
 Route::middleware('auth')->group(function () {

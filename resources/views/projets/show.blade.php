@@ -22,7 +22,7 @@
                 <p><strong>Plan d'affaires :</strong> Non fourni</p>
             @endif
 
-            <a href="{{ route('promoteur.dashboard') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+            <a href="{{ redirect()->back()}}" class="btn btn-secondary mt-3">Retour à la liste</a>
         </div>
     </div>
 </div>

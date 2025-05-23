@@ -12,10 +12,13 @@
 </head>
 <body>
     <h1>Décision du comité de validation</h1>
+    <p>Bonjour,</p>
+    <p>La décision du comité de validation du projet "{{ $projet->titre }}" est :</p>
+    <p><strong>{{ $status }}</strong></p>
 
     <div class="info">
         <p><span class="label">Projet :</span> {{ $projet->titre }}</p>
-        <p><span class="label">Promoteur :</span> {{ $projet->promoteur->user->name }}</p>
+        <p><span class="label">Promoteur :</span> {{ $projet->description }}</p>
         <p><span class="label">Date :</span> {{ $projet->updated_at }}</p>
         <p><span class="label">Statut :</span> {{ $projet->status }}</p>
         @if($justification)

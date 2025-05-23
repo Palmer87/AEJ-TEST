@@ -19,7 +19,7 @@ class PromoteurController extends Controller
         if(Auth::user()->role == 'promoteur'){
             $user = Auth::user();
 
-            $projets = Projet::paginate(5);
+            $projets = Projet::with('promoteur')->where('promoteur_id', $user->promoteur->id)->get();
             return view('dashboard.promoteur', compact('projets', 'user'));
         }else{
             notify()->error('Vous n\'avez pas accès à cette page');
