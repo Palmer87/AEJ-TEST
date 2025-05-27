@@ -29,16 +29,20 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::resource('projets', projetController::class);
 Route::middleware(['auth'])->group(function () {
     Route::resource('promoteurs', Admincontroller::class);
     Route::resource('promoteurs', PromoteurController::class);
-    Route::resource('projets', projetController::class);
     route::resource('gestionnaires', GestionnaireController::class);
     Route::get('/dashboard/gestionnaire', [GestionnaireController::class, 'dashboard'])->name('gestionnaire.dashboard');
     Route::get('/dashboard/promoteur', [PromoteurController::class, 'dashboard'])->name('promoteur.dashboard');
     Route::get('/dashboard/admin', [Admincontroller::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/projets/{projet}/valider', [projetController::class, 'valider'])->name('projets.valider');
     Route::post('/projets/{projet}/rejeter', [projetController::class, 'rejeter'])->name('projets.rejeter');
+    Route::get('admin/projets',function(){
+        $projets = Projet::all();
+        return view('admin.projets',compact('projets'));
+    })->name('admin.projets.index');
 
 });
 

@@ -67,6 +67,7 @@
                             <th>Etat du projet</th>
                             <th>Plan d'affaires</th>
                             <th>date</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,6 +93,11 @@
                                 @endif
                             </td>
                             <td>{{ $projet->created_at->format('d-m-Y') }}</td>
+                            <td>
+                                <a href="{{ route('projets.show', $projet) }}" class="btn btn-sm btn-info">Voir</a>
+                                <a href="{{ route('projets.edit', $projet) }}" class="btn btn-sm btn-primary">Modifier</a>
+                                <a href="{{ route('projets.destroy', $projet) }}" class="btn btn-sm btn-danger ">Supprimer</a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -23,7 +23,7 @@ class GestionnaireController extends Controller
             $user = Auth::user();
             $projets = Projet::with('promoteur.user')->get();
             $promoteurs = Promoteur::with('user')->get();
-            return view('dashboard.gestionnaire', compact('projets','promoteurs','user'));
+            return view('dashboard.gestionnaire', compact('projets','promoteurs','user',));
         }else{
 
             return redirect()->back();

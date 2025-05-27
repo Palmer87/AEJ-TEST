@@ -18,8 +18,7 @@ class Admincontroller extends Controller
 
             $projets = Projet::with('promoteur.user')->get();
             $promoteurs = Promoteur::with('user')->get();
-
-            return view('dashboard.admin', compact('projets','promoteurs','user'));
+        return view('dashboard.admin', compact('projets','promoteurs','user'));
 
         }
 

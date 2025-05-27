@@ -9,7 +9,7 @@ Statut : **{{ $statut }}**
 **Justification :**
 {{ $justification }}
 @endif
-**la pices jointe:**{{ $fileName}}
+
 @component('mail::button', ['url' => route('projets.show', $projet->id)])
 Voir le projet
 @endcomponent
