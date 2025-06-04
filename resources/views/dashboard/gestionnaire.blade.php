@@ -39,7 +39,7 @@
                         <div class="col me-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 Total des projets</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$totalProjects ??0}}
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$projets->count() ??0}}
                             </div>
                         </div>
                         <div class="col-auto">
@@ -56,7 +56,7 @@
                         <div class="col me-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                             Projets en Attent</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$pendingProjects}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$projets->where('status','validé')->count()}}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fa-solid fa-business-time fa-2x text-gray-300"></i>
@@ -76,7 +76,7 @@
                                 Projet validés
                                 </div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                {{$approvedProjects}}
+                                {{$projets->where('status','rejeté')->count()??0}}
                             </div>
                             <i class="fa-solid fa-briefcase fa-2x text-gray-300"></i>
                         </div>
@@ -96,8 +96,7 @@
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                             Projts rejetés
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$rejectedProjects
-                            }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{$projets->where('status','validé')->count()??0 }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>

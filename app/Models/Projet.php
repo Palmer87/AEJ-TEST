@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
+use ApiPlatform\Metadata\ApiResource;
 
 /**
  *
@@ -31,8 +33,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Projet whereUpdatedAt($value)
  * @mixin \Eloquent
  */
+
 class Projet extends Model
 {
+    use HasApiTokens;
     protected $fillable = [
         'titre',
         'promoteur_id',
@@ -43,6 +47,15 @@ class Projet extends Model
         'description'
 
     ];
+    // app/Models/Projet.php
+
+public function correction_Requests()
+{
+    return $this->hasMany(Correction::class);
+}
+
+
+
     public function promoteur()
     {
         return $this->belongsTo(Promoteur::class);

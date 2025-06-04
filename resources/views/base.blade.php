@@ -17,6 +17,21 @@
 
 
     <style>
+
+    @keyframes fade-in-down {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-fade-in-down {
+        animation: fade-in-down 0.3s ease-out;
+    }
+
         .card {
             border: none;
             border-radius: 1rem;
@@ -182,7 +197,7 @@
 </head>
 
 <body>
-    <x-notify::notify />
+
 
     <div class="wrapper">
         <nav id="sidebar">
@@ -248,6 +263,7 @@
                     </div>
                 </div>
             </nav>
+            <x-notify::notify />
 
 
 
@@ -353,6 +369,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 </script>
+
+
+    <!-- Script JS simple pour ouvrir/fermer -->
+    <script>
+    function closeCorrectionModal() {
+        document.getElementById('correctionModal').classList.add('hidden');
+    }
+    function openCorrectionModal() {
+        document.getElementById('correctionModal').classList.remove('hidden');
+    }
+    </script>
 
     @notifyJs
 </body>

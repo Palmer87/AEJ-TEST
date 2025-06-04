@@ -17,9 +17,9 @@ class ProjetController extends Controller
 
     }
 
-    public function create()
+    public function create(Projet $projets)#)
     {
-        return view('projets.create');
+        return view('projets.create',compact('projets'));
     }
     public function store(Request $request)
     {
@@ -30,7 +30,7 @@ class ProjetController extends Controller
             'plan_affaires' =>'file|mimes:pdf,doc,docx', // Ajoutez les extensions de fichiers autorisées ici, par exemple : 'pdf,doc,docx,odt'
             'forme_juridique' =>'required|string',
         ]);
-        $projet=Projet::create([
+        $projets=Projet::create([
             'promoteur_id'=> Auth::user()->promoteur->id,
             'titre'=>$request->titre,
             'description'=>$request->description ,
@@ -55,7 +55,7 @@ class ProjetController extends Controller
         return view('projets.edit',compact('projets'));
     }
     public function update(Request $request, string $id)
-    {   dd($request->all());
+    {
         $request->validate([
             'titre' =>'required|string|max:255',
             'description' =>'required|string',

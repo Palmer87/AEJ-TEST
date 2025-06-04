@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GestionnaireRequest;
+use App\Models\Correction;
 use App\Models\Gestionnaire;
 use App\Models\Projet;
 use App\Models\Promoteur;
@@ -19,6 +20,7 @@ class GestionnaireController extends Controller
      */
     public function dashboard()
     {
+
         if(Auth::user()->role == 'gestionnaire'){
             $user = Auth::user();
             $projets = Projet::with('promoteur.user')->get();

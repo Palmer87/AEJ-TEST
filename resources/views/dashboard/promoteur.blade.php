@@ -68,6 +68,7 @@
                             <th>Plan d'affaires</th>
                             <th>date</th>
                             <th>Actions</th>
+                            <th>demande de correction</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -94,10 +95,21 @@
                             </td>
                             <td>{{ $projet->created_at->format('d-m-Y') }}</td>
                             <td>
+                                @if ($projet->status === 'en attente')
+
+
                                 <a href="{{ route('projets.show', $projet) }}" class="btn btn-sm btn-info">Voir</a>
                                 <a href="{{ route('projets.edit', $projet) }}" class="btn btn-sm btn-primary">Modifier</a>
-                                <a href="{{ route('projets.destroy', $projet) }}" class="btn btn-sm btn-danger ">Supprimer</a>
+                                <form action="{{ route('projets.destroy', $projet) }}" method="POST" style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
+                                </form>
+
+                                @endif
+
                             </td>
+                         
                         </tr>
                         @endforeach
                     </tbody>

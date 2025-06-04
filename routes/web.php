@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProjetController as AdminProjetController;
 use App\Http\Controllers\Admincontroller;
+use App\Http\Controllers\CorrectionController;
 use App\Http\Controllers\GestionnaireController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\projetController;
@@ -29,8 +30,8 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::resource('projets', projetController::class);
 Route::middleware(['auth'])->group(function () {
+    Route::resource('projets', projetController::class);
     Route::resource('promoteurs', Admincontroller::class);
     Route::resource('promoteurs', PromoteurController::class);
     route::resource('gestionnaires', GestionnaireController::class);
@@ -43,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
         $projets = Projet::all();
         return view('admin.projets',compact('projets'));
     })->name('admin.projets.index');
+    Route::post('/correction-request/send', [CorrectionController::class, 'send'])->name('correction-request.send');
+
 
 });
 
