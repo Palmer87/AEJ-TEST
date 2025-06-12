@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ProjetStatutMail;
+use App\Models\Correction;
 use App\Models\Projet;
 use Auth;
 use Illuminate\Http\Request;

@@ -61,6 +61,7 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
+                            <th>ID</th>
                             <th>Titre</th>
                             <th>Type du pojet</th>
                             <th>La forme juridique</th>
@@ -74,6 +75,7 @@
                     <tbody>
                         @foreach ($projets as $projet)
                         <tr>
+                            <td>{{$projet->id}}</td>
                             <td>{{ $projet->titre }}</td>
                             <td>{{ $projet->type_projet }}</td>
                             <td>{{ $projet->forme_juridique }}</td>
@@ -95,21 +97,41 @@
                             </td>
                             <td>{{ $projet->created_at->format('d-m-Y') }}</td>
                             <td>
-                                @if ($projet->status === 'en attente')
+                                {{--@if ($projet->status === 'en attente')--}}
 
 
-                                <a href="{{ route('projets.show', $projet) }}" class="btn btn-sm btn-info">Voir</a>
-                                <a href="{{ route('projets.edit', $projet) }}" class="btn btn-sm btn-primary">Modifier</a>
-                                <form action="{{ route('projets.destroy', $projet) }}" method="POST" style="display: inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">Supprimer</button>
-                                </form>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm   dropdown-toggle" style='backcolor: blue;' type="button" id="dropdownMenuButton{{ $projet->id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $projet->id }}">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('projets.show', $projet) }}">Voir</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item btn btn-sm btn-primary" href="{{ route('projets.edit', $projet) }}">Modifier</a>
+                                        </li>
+                                        <li>
+                                            <form action="{{ route('projets.destroy', $projet) }}" method="POST" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="dropdown-item text-danger">Supprimer</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
 
-                                @endif
+
+                                {{--@endif--}}
 
                             </td>
-                         
+                            @if($projet->correction_Requests->isNotEmpty())
+
+                            <td><a href="{{ route('projets.edit', $projet) }}" class="btn btn-sm btn-primary">Corriger </a></td>
+                            @endif
+
+
+
                         </tr>
                         @endforeach
                     </tbody>

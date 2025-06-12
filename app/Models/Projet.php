@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens;
 use ApiPlatform\Metadata\ApiResource;
 
 /**
@@ -36,7 +35,7 @@ use ApiPlatform\Metadata\ApiResource;
 
 class Projet extends Model
 {
-    use HasApiTokens;
+
     protected $fillable = [
         'titre',
         'promoteur_id',
